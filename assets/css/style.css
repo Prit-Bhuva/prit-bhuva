@@ -848,7 +848,6 @@ p.project-description {
     }
 }
 
-/* Apply animation when items are loaded */
 #one .gallery-item.visible {
     display: block;
     animation: fadeIn 0.5s ease-in-out;
@@ -1700,4 +1699,57 @@ button.bottom-top-button:hover {
     animation: animate-pulse 3s linear infinite;
 }
 
+@media (max-width: 768px) {
+    .tab-btn-main {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
+    }
+    
+    .tab-btn {
+        width: 100%;
+        text-align: center;
+    }
 
+    .gallery {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .gallery-item {
+        text-align: center;
+    }
+
+    .gallery-item .row {
+        flex-direction: column;
+    }
+
+    .gallery-item .col-md-6 {
+        width: 100%;
+        order: unset !important;
+        text-align: center;
+    }
+
+    .gallery-item-sub {
+        width: 100%;
+        height: auto;
+    }
+
+    .gallery-item-sub img {
+        width: 100%;
+        height: auto;
+    }
+
+    h3.project-title {
+        font-size: 1.2rem;
+    }
+
+    p.project-description {
+        font-size: 0.9rem;
+        padding: 10px;
+    }
+
+    .load-more-container {
+        text-align: center;
+    }
+}
