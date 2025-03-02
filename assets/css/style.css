@@ -1710,7 +1710,7 @@ button.bottom-top-button:hover {
     }
 
     .gallery-item-sub img {
-        width: 100%;
+        width: 90%;
         height: auto;
         max-height: 300px; /* Adjust as needed */
         object-fit: cover;
@@ -1721,4 +1721,8 @@ button.bottom-top-button:hover {
         display: flex;
         justify-content: center;
     }
+    .prohect-title{
+      padding-top:20px;
+    }
+  
 }
