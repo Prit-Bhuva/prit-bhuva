@@ -121,13 +121,87 @@ $(window).on('scroll', function () {
 
 /*------------------------------------- Tabs -------------------------------------*/
 $(function () {
-    $(document).on('click', '.tab-btn-main a', function (e) {
+    $(document).on("click", ".tab-btn-main a", function (e) {
         e.preventDefault();
-        const tabId = $(this).data('tab');
-        $('.tab-btn-main a, .Tabcondent').removeClass('tab-active');
-        $(this).addClass('tab-active');
-        $('#' + tabId).addClass('tab-active');
+        const tabId = $(this).data("tab");
+        $(".tab-btn-main a, .Tabcondent").removeClass("tab-active");
+        $(this).addClass("tab-active");
+        $("#" + tabId).addClass("tab-active");
+
+        // Reset Load More only if the selected tab is "one"
+        if (tabId === "one") {
+            currentIndex = itemsToShow;
+            mobileIndex = itemsToShow;
+            showInitialItems();
+        } else {
+            $("#loadMore").hide(); // Hide Load More for other tabs
+        }
     });
+
+    const itemsToShow = 2;
+    let currentIndex = itemsToShow;
+    let mobileIndex = itemsToShow;
+
+    function showInitialItems() {
+        const isMobile = $(window).width() <= 999;
+        const galleryItems = $("#one .gallery-item");
+        const mobileGalleryItems = $("#one .gallery-mobile");
+
+        // Hide all items first
+        galleryItems.hide().removeClass("visible");
+        mobileGalleryItems.hide().removeClass("visible");
+
+        if (isMobile) {
+            mobileGalleryItems.slice(0, itemsToShow).show().addClass("visible");
+            $("#loadMore").toggle(mobileGalleryItems.length > itemsToShow);
+        } else {
+            galleryItems.slice(0, itemsToShow).show().addClass("visible");
+            $("#loadMore").toggle(galleryItems.length > itemsToShow);
+        }
+    }
+
+    function loadMoreItems() {
+        const isMobile = $(window).width() <= 999;
+
+        if (isMobile) {
+            const mobileGalleryItems = $("#one .gallery-mobile");
+            mobileGalleryItems.slice(mobileIndex, mobileIndex + itemsToShow).show().addClass("visible");
+            mobileIndex += itemsToShow;
+
+            if (mobileIndex >= mobileGalleryItems.length) {
+                $("#loadMore").hide();
+            }
+        } else {
+            const galleryItems = $("#one .gallery-item");
+            galleryItems.slice(currentIndex, currentIndex + itemsToShow).show().addClass("visible");
+            currentIndex += itemsToShow;
+
+            if (currentIndex >= galleryItems.length) {
+                $("#loadMore").hide();
+            }
+        }
+    }
+
+    $("#loadMore").on("click", loadMoreItems);
+
+    function handleGalleryVisibility() {
+        const isMobile = $(window).width() <= 999;
+
+        if (isMobile) {
+            $(".gallery-item").hide();
+            $(".gallery-mobile").show();
+        } else {
+            $(".gallery-item").show();
+            $(".gallery-mobile").hide();
+        }
+
+        // Ensure proper items are displayed
+        showInitialItems();
+    }
+
+    // Run on page load and resize
+    showInitialItems();
+    $(window).on("resize", handleGalleryVisibility);
 });
 
 /*------------------------------------- Pop Videos -------------------------------------*/
@@ -226,72 +300,6 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     button.addEventListener('click', () => {
         window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
-});
-
-/*------------------------------------- Load More Button -------------------------------------*/
-document.addEventListener("DOMContentLoaded", function () {
-    const loadMoreBtn = document.getElementById("loadMore");
-    const tabButtons = document.querySelectorAll(".tab-btn");
-    const itemsToShow = 2; // Number of items to show initially
-    let currentIndex = itemsToShow;
-
-    function showInitialItems() {
-        const galleryItems = document.querySelectorAll("#one .gallery-item");
-        galleryItems.forEach((item, index) => {
-            if (index < itemsToShow) {
-                item.classList.add("visible");
-            } else {
-                item.classList.remove("visible");
-            }
-        });
-
-        // Show Load More button only if there are more items
-        loadMoreBtn.style.display = galleryItems.length > itemsToShow ? "block" : "none";
-    }
-
-    function loadMoreItems() {
-        const galleryItems = document.querySelectorAll("#one .gallery-item");
-        for (let i = currentIndex; i < currentIndex + itemsToShow; i++) {
-            if (galleryItems[i]) {
-                galleryItems[i].classList.add("visible");
-            }
-        }
-        currentIndex += itemsToShow;
-
-        // Hide Load More button if all items are shown
-        if (currentIndex >= galleryItems.length) {
-            loadMoreBtn.style.display = "none";
-        }
-    }
-
-    // Show initial items on page load
-    showInitialItems();
-
-    // Load More button click event
-    loadMoreBtn.addEventListener("click", loadMoreItems);
-
-    // Tab switch logic
-    tabButtons.forEach((button) => {
-        button.addEventListener("click", function () {
-            let activeTab = document.querySelector(".tab-btn.tab-active");
-            if (activeTab) activeTab.classList.remove("tab-active");
-            this.classList.add("tab-active");
-
-            let tabId = this.getAttribute("data-tab");
-            let activeContent = document.querySelector(".Tabcondent.tab-active");
-            if (activeContent) activeContent.classList.remove("tab-active");
-
-            let selectedContent = document.getElementById(tabId);
-            if (selectedContent) selectedContent.classList.add("tab-active");
-
-            // Reset Load More functionality only for tab "one"
-            if (tabId === "one") {
-                showInitialItems();
-            } else {
-                loadMoreBtn.style.display = "none"; // Hide Load More for other tabs
-            }
-        });
     });
 });
 
