@@ -1700,7 +1700,6 @@ button.bottom-top-button:hover {
 }
 
 @media screen and (max-width: 768px) {
-    .project-title,
     .project-description {
         display: none;
     }
@@ -1723,4 +1722,3 @@ button.bottom-top-button:hover {
         justify-content: center;
     }
 }
-
